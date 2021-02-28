@@ -1,0 +1,37 @@
+331 CA Nitu Nicolae-Iulian Tema3
+
+Workerul MASTER deschida 4 threaduri pt a efectua citirea in paralel.
+Citirea in paralel o efectuez in functia thread_function.
+ * Fiecare thread citeste line by line si atunci cand da peste genul corespunzator,
+ * va trimite workerului corespunzator acel paragraf.
+ * va astepta de la worker varianta procesata si o va insera intr-un map pt afisarea 
+ * in ordinea corecta in procesul MASTER
+
+Trimiterea de la thread la workerul corespunzator o fac prin identificarea genului,
+apoi concatenez linie cu linie si trimit direct tot paragraful la worker.
+
+Folosesc pthread_barrier_wait(&barrier) pt a astepta toate threadurile sa termine
+citirea din fisier. Apoi trimit fiecarui worker stringul "stopSemafor" pentru
+a opri rularea acestora.
+
+Fiecarui paragraf trimis la worker ii asignez un index, apoi il trimit la worker,
+iar rezultatul intors il inserez intr-un map de tipul {index, string-procesat}.
+Apoi parcurg acel map si voi avea mesajele procesate in ordinea in care apareau
+la input.
+
+Scalabilitate:
+Voi pune timpii obtinuti de checker pe local (4 cores 2.7ghz)
+~~~~~~~~~~~~~~~ ESTABLISHING BASE TIME ~~~~~~~~~~~~~~
+Test input1.txt took 0.01773238182067871 seconds
+Test input2.txt took 0.3145787715911865 seconds
+Test input3.txt took 0.9076039791107178 seconds
+Test input4.txt took 16.667848348617554 seconds
+Test input5.txt took 20.0666401386261 seconds
+
+~~~~~~~~~~~~~~~~~~~ RUNNING TESTS ~~~~~~~~~~~~~~~~~~~
+Test input1.txt took 0.3664100170135498 seconds
+Test input2.txt took 0.5671703815460205 seconds
+Test input3.txt took 1.0195820331573486 seconds
+Test input4.txt took 10.249885082244873 seconds
+Test input5.txt took 15.315618753433228 seconds
+
